@@ -3,8 +3,8 @@ import { View, StyleSheet, Button, Modal, Text, Pressable, Dimensions } from 're
 import MapboxGL from "@react-native-mapbox-gl/maps";
 import { getPreciseDistance } from 'geolib';
 
-//chiave per poter fare chiamate all'API di mapbox e caricare l'immagine
-const apiKey = "pk.eyJ1IjoiZGVla3NoYW1laHRhMTI1IiwiYSI6ImNrcWV6OWE0bDBjcmMydXF1enZqMjd5MDMifQ.hFB7SI_kojKYfNQ42c62BA";
+//key to load the map
+const apiKey = "";
 MapboxGL.setAccessToken(apiKey);
 
 export default class Map extends Component {
