@@ -11,27 +11,18 @@ export default class Map extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			//posizione che verrà caricata
 			location: [12.4964, 41.9028],
-			//numero di punti che ha selezionato l'utente
 			points: 0,
-			//variabile per determinare se mostrare il marker1
 			point1: false,
-			//variabile per determinare se mostrare il marker2
 			point2: false,
-			//variabile per determinare se mostrare il popup con la distanza
 			visible: false,
-			//variabile per determinare se mostrare la linea che connette i marker
 			showline: false
 		};
 	}
 	
-	//funzione che prende una featore (conentente le coordinate di dove ha cliccato l'utente) e imposta il n° marker
 	renderAnnotation(feature) {
-		//calcolo ciclico numero di punti
 		var points = this.state.points % 2 + 1;
 		if (points == 1){
-			//nel caso sia 1 imposto mostro il primo marker
 			this.setState({
 				points: (this.state.points % 2) + 1,
 				point1: !this.state.point1,
@@ -39,7 +30,6 @@ export default class Map extends Component {
 			});
 		}
 		else if (points == 2){
-			//nel caso sia 2 imposto mostro il secondo marker
 			this.setState({
 				points: (this.state.points % 2) + 1,
 				point2: !this.state.point2,
@@ -48,7 +38,6 @@ export default class Map extends Component {
 		}
 	}
 	
-	//funzione per modificare la visibilità di un marker
 	togglePoint(){
 		switch (this.state.points){
 			case 1:
@@ -66,7 +55,6 @@ export default class Map extends Component {
 		}
 	}
 	
-	//funzione che genera il primo marker
 	renderPoint1(){
 		if (this.state.point1){
 			return (
@@ -78,7 +66,6 @@ export default class Map extends Component {
 		}
 	}
 	
-	//funzione che genera il secondo marker
 	renderPoint2(){
 		if (this.state.point2){
 			return (
@@ -90,7 +77,6 @@ export default class Map extends Component {
 		}
 	}
 	
-	//funzione che nasconde la linea precedentemente tracciata
 	hide(){
 		this.setState({
 			visible: !this.state.visible,
@@ -98,14 +84,12 @@ export default class Map extends Component {
 		});
 	}
 
-	//calcolo distanza usando la libraria geolib e passando le coordinate dei due marker [Km]
 	calculateDistance(){
 		if (!(this.state.point1 && this.state.point2)) return;
 		const distance = (getPreciseDistance(
 			this.state.point1coordinates, 
 			this.state.point2coordinates
 		)/1000).toString() + " Km";
-		//aggiornamento visibilità
 		this.setState({
 			visible: true,
 			text: distance,
@@ -113,11 +97,9 @@ export default class Map extends Component {
 		});
 	}
 
-	//funzione per la visualizzazione della linea
 	renderLine(){
 		if (!this.state.showline) return;
 		return(
-			//creazione linea date le coordinate
 			<MapboxGL.ShapeSource 
 				id="source"
 				shape={{
@@ -142,13 +124,10 @@ export default class Map extends Component {
 		);
 	}
 
-	//funzione render default di un React-Native component per la visualizzazione di componenti
 	render() {
 		return (
-			//contenitore per la mappa
 			<View style={styles.container}>
 				<MapboxGL.MapView 
-					//mappa con funzione onPress -> creazione marker 
 					style={styles.map} 
 					onPress={
 						(feature) => {
@@ -157,7 +136,6 @@ export default class Map extends Component {
 					}
 				>
 					<MapboxGL.Camera 
-						//impostazione punto di vista dell'utente
 						zoomLevel={4}
 						animationMode={'flyTo'}
 						centerCoordinate={this.state.location}
@@ -173,7 +151,6 @@ export default class Map extends Component {
 				<View>
 					<Button onPress={() => {this.calculateDistance()}} title={"Calculate Distance"}/>
 					<Modal
-						//popup
 						transparent={true}
 						visible={this.state.visible}
 						onRequestClose={
@@ -198,7 +175,6 @@ export default class Map extends Component {
 	}
 }
 
-//style simili al css ma contenuti dentro ad un oggetto React
 const styles = StyleSheet.create({
 	container: {
 		height: "100%",
